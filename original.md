@@ -170,8 +170,16 @@ This formulation answers both "whether" and "when" a patient is likely to develo
 
 6.3. Unsupervised phenotyping for cohort discovery
 
-In settings where outcome labels are absent, or as a complementary exploratory step prior to supervised analysis, an unsupervised approach is applied to discover natural patient subgroups within the MASLD cohort based on their biomarker profiles:
+In settings where outcome labels are absent, or as a complementary exploratory step prior to 
+supervised analysis, an unsupervised approach is applied to discover natural patient subgroups 
+within the MASLD cohort based on their biomarker profiles:
 
 cluster(x) → phenotype_k
 
-Clustering algorithms partition MASLD patients into subgroups with similar laboratory patterns. Once clusters are identified, each cluster is characterized by examining which biomarker domains dominate its centroid (e.g., a cluster with elevated LDL-C and triglycerides is labeled a cardiovascular-risk phenotype). This hypothesis-free discovery approach may reveal phenotypes not anticipated by prior clinical knowledge, and is particularly valuable for exploratory cohorts. In addition, unsupervised phenotyping is more robust to confounders such as alcohol use and obesity, which distort disease results.
+Clustering algorithms partition MASLD patients into subgroups with similar laboratory patterns. 
+Once clusters are identified, each cluster is characterized by examining which biomarker domains 
+dominate its centroid (e.g., a cluster with elevated LDL-C and triglycerides is labeled a 
+cardiovascular-risk phenotype). 
+This hypothesis-free discovery approach may reveal phenotypes not anticipated by prior clinical knowledge, 
+and is particularly valuable for exploratory cohorts. In addition, unsupervised phenotyping is more robust 
+to confounders such as alcohol use and obesity, which distort disease results.
