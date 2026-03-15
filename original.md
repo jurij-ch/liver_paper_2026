@@ -152,9 +152,9 @@ One of the main goals of this work is to address the clinical challenge of strat
 
 6.1. Supervised longitudinal (temporal) comorbidity risk classification
 
-When longitudinal outcome labels are available - specifically when datasets indicate which patients with MASLD  later develop particular comorbid conditions - the phenotyping task can be formulated as a multi-label prediction problem:
+When longitudinal outcome labels are available - specifically when datasets indicate which patients with MASLD later develop particular comorbid conditions - the phenotyping task can be formulated as a multi-label prediction problem:
 
-f(x) → (y1​,y2​,…,yK​),
+f(x) → (y₁, y₂, …, yK),
 
 where x ∈ ℝⁿ denotes the patient’s baseline clinical investigations (e.g., laboratory measurements, imaging derived data), and each 𝑦 𝑘 ∈ { 0 , 1 } represents the occurrence of outcome 𝑘 k during follow-up.
 
