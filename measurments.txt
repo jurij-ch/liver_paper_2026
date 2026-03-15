@@ -1,0 +1,10 @@
+Liver: ALAT,ASAT, GGT, SF, Bilirubin
+Lipid metabolism: ABL, ZBL, Total cholesterol, TG
+Glucose tolerance disorder: Insulin, C-peptide, HOMA, HbA1c
+Thyroid gland: TSH, fT3, fT4
+Liver stiffness assessment: Fibroscan, Elastography
+Inflammation: IL-6, TNF-alfa
+BMI: Height, Weight
+Kidney: Urea, Creatinin, GFR
+Ultrasound
+Coronary heart disease (anamnesis)
