@@ -156,7 +156,7 @@ When longitudinal outcome labels are available - specifically when datasets indi
 
 f(x) → (y₁, y₂, …, yK),
 
-where x ∈ ℝⁿ denotes the patient’s baseline clinical investigations (e.g., laboratory measurements, imaging derived data), and each 𝑦 𝑘 ∈ { 0 , 1 } represents the occurrence of outcome 𝑘 k during follow-up.
+where x ∈ ℝⁿ denotes the patient’s baseline feature vector composed of clinical and laboratory measurements organized into clinically meaningful domains (e.g., MENTION SOME OF Liver, Lipid, Glucose, Thyroid, Stiffness, Inflammation, BMI, Kidney, Ultrasound, CHD anamnesis), and each yₖ ∈ {0, 1} represents the presence or absence of comorbidity k during follow-up. Each outcome yₖ corresponds to a clinically relevant comorbidity or disease phenotype — such as cardiovascular, diabetic, thyroid-related, or nephrologic complications — that may develop over time in the context of MASLD.
 
 A multi-label formulation is preferred over a single-label approach because patients with MASLD often develop multiple comorbid conditions simultaneously, reflecting shared metabolic and pathophysiological mechanisms. Furthermore, clinical investigation data can frequently be organized into clinically meaningful domains. For example, changes in LDL-C, triglycerides, HDL-C, and PCSK9 reflect lipid metabolism, whereas insulin, HbA1c, HOMA-IR, and C-peptide capture insulin resistance. This inherent domain structure can be leveraged during modeling through feature grouping or domain-aware regularization.
 
