@@ -1,4 +1,6 @@
-Good Prognosis: 
+This is a hypothetical view on how we see the solution. This is a draft.
+
+Good Prognosis:
  - Isolated MASLD - There are no laboratory changes, visible only on ultrasound. Elastography - F0
 
 Moderate Prognosis:
