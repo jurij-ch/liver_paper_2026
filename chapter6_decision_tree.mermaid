@@ -1,0 +1,38 @@
+flowchart TD
+    START["MASLD patient cohort\nClinical features + laboratory data"] --> Q1{"Are outcome labels\navailable?"}
+
+    Q1 -->|"Yes: labeled outcomes"| SUP["Supervised learning\nGoal: outcome prediction,\nclassification, decision support"]
+    Q1 -->|"No: labels absent or unreliable"| UNSUP["Unsupervised learning\nGoal: phenotype discovery,\ncohort stratification"]
+    Q1 -->|"Partial labels"| SSL["Semi-supervised learning\nLeverages both labeled\nand unlabeled data"]
+    SSL -.->|extends| SUP
+
+    SUP --> Q2S{"Is time-to-event\ndata available?"}
+    Q2S -->|"Yes: censored follow-up"| S_CENS["Survival modeling\nTime-to-event prediction"]
+    Q2S -->|"No: fixed window /\nbinary outcomes"| S_SIMP["Classification / Regression\nFixed-horizon prediction"]
+
+    S_CENS --> S_CENS_M["Methods:\nCox PH, RSF, XGBoost-Cox,\nDeepSurv, DeepHit\n\nValidation:\nC-index, time-dep. AUC,\nBrier score, DCA"]
+
+    S_SIMP --> S_SIMP_M["Methods:\nLogistic Regression, Random Forest,\nXGBoost/LightGBM/CatBoost,\nSVM, Neural Networks\n\nValidation:\nAUROC, AUPRC, F1,\nCalibration curves, DCA"]
+
+    UNSUP --> Q2U{"Is time-to-event data\navailable for validation?"}
+    Q2U -->|Yes| U_CENS["Clustering + Survival validation\nTemporal trajectory analysis"]
+    Q2U -->|No| U_SIMP["Clustering + Outcome-rate validation\nPrevalence-based profiling"]
+
+    U_CENS --> U_CENS_M["Clustering:\nK-means, GMM, HDBSCAN,\nSpectral clustering\nDim. reduction: PCA, NMF, UMAP\n\nPost-hoc validation:\nKaplan-Meier, Log-rank test,\nMultivariable Cox regression"]
+
+    U_SIMP --> U_SIMP_M["Clustering:\nK-means, GMM, HDBSCAN,\nSpectral clustering\nDim. reduction: PCA, NMF, UMAP\n\nPost-hoc validation:\nChi-square / Fisher test,\nLogistic regression"]
+
+    S_CENS_M --> CDS["Clinical decision support"]
+    S_SIMP_M --> CDS
+    U_CENS_M --> CDS
+    U_SIMP_M --> CDS
+
+    style START fill:#e1f5fe,stroke:#0288d1
+    style SUP fill:#fff3e0,stroke:#f57c00
+    style UNSUP fill:#e8f5e9,stroke:#388e3c
+    style SSL fill:#fce4ec,stroke:#c62828,stroke-dasharray: 5 5
+    style S_CENS fill:#fff8e1,stroke:#f9a825
+    style S_SIMP fill:#fff8e1,stroke:#f9a825
+    style U_CENS fill:#e8f5e9,stroke:#2e7d32
+    style U_SIMP fill:#e8f5e9,stroke:#2e7d32
+    style CDS fill:#f3e5f5,stroke:#7b1fa2

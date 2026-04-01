@@ -1,0 +1,17 @@
+block-beta
+    columns 3
+
+    space:1 COL1["Censored data\n(time-to-event)"]:1 COL2["Simplified data\n(fixed-window / binary)"]:1
+
+    ROW1["Supervised\nlearning"]:1 CELL1["Survival modeling\n\nCox PH, RSF,\nXGBoost-Cox, DeepSurv,\nDeepHit\n\nMetrics: C-index,\ntime-dep. AUC, Brier, DCA"]:1 CELL2["Classification / Regression\n\nLogistic Regression,\nRandom Forest, XGBoost,\nLightGBM, SVM, NN\n\nMetrics: AUROC, AUPRC,\nF1, Calibration, DCA"]:1
+
+    ROW2["Unsupervised\nlearning"]:1 CELL3["Clustering + Survival\nvalidation\n\nK-means, GMM, HDBSCAN\nPCA, NMF, UMAP\n\nValidation: KM curves,\nLog-rank, Cox regression"]:1 CELL4["Clustering + Outcome-rate\nvalidation\n\nK-means, GMM, HDBSCAN\nPCA, NMF, UMAP\n\nValidation: Chi-square,\nFisher, Logistic regression"]:1
+
+    style COL1 fill:#e3f2fd,stroke:#1565c0
+    style COL2 fill:#e3f2fd,stroke:#1565c0
+    style ROW1 fill:#fff3e0,stroke:#f57c00
+    style ROW2 fill:#e8f5e9,stroke:#388e3c
+    style CELL1 fill:#fff8e1,stroke:#f9a825
+    style CELL2 fill:#fff8e1,stroke:#f9a825
+    style CELL3 fill:#c8e6c9,stroke:#2e7d32
+    style CELL4 fill:#c8e6c9,stroke:#2e7d32
