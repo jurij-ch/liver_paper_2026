@@ -1,0 +1,101 @@
+
+
+6.3.1. Supervised learning with censored data: survival modeling
+ When longitudinal follow-up data with time-stamped events are available, the analytical framework naturally extends to survival analysis — also referred to as time-to-event modeling. What distinguishes this setting from standard classification is the explicit handling of censored observations (patients who have not yet experienced the event by the end of follow-up) and the modeling of when, not merely whether, an outcome occurs. This temporal dimension is critical for clinical decision-making, as the timing of comorbidity onset directly influences monitoring intervals, therapeutic urgency, and preventive strategies.
+
+Applicable methods:
+- Cox proportional hazards model: the classical survival framework that estimates how covariates shift the baseline hazard. Highly interpretable but relies on the proportional hazards assumption and captures only linear effects.
+- Random survival forests (RSF): a non-parametric ensemble method that relaxes the proportional hazards assumption and captures non-linear feature interactions. Handles mixed data types and missing values natively.
+- Gradient-boosted survival models (XGBoost-Cox, LightGBM-Survival): combine the flexibility of gradient boosting with Cox partial likelihood loss. Effective for high-dimensional feature spaces with complex interactions.
+- DeepSurv: a deep neural network extension of the Cox model that captures non-linear covariate effects while retaining the proportional hazards framework.
+- DeepHit: a deep learning architecture designed for competing risks that does not assume proportional hazards and directly models the joint distribution of event times across multiple outcomes — particularly relevant for MASLD, where the occurrence of one comorbidity (e.g., cardiovascular disease) may alter the risk of another (e.g., chronic kidney disease).
+- Fine-Gray model: addresses competing risks by modeling the subdistribution hazard, allowing estimation of cumulative incidence in the presence of competing events.
+
+Validation: Concordance index (C-index), time-dependent AUC, Brier score, decision curve analysis (DCA).
+Interpretation: SHAP values, permutation feature importance, partial dependence plots.
+
+Strengths: Naturally handles incomplete follow-up through censoring; models the timing of events, enabling time-specific risk predictions; supports competing risk formulations essential for multi-comorbidity settings; connects naturally to a Markov state-transition perspective where MASLD is the entry state and transitions to comorbid states are governed by cause-specific hazard functions.
+Limitations: Requires time-stamped event data, which may not be available in all clinical registries; Cox-based methods assume proportional hazards; deep learning approaches require larger cohorts and are less interpretable without post-hoc explanation methods.
+
+6.3.2. Supervised learning with simplified data: fixed-horizon classification
+ When precise event times are unavailable or when the clinical question concerns a fixed prediction horizon (e.g., "will this patient develop cardiovascular disease within 2 years?"), outcomes can be simplified to binary or categorical labels within a defined time window. This formulation reduces the problem to standard classification or regression.
+
+Applicable methods:
+- Logistic regression: highly interpretable baseline; well suited for small to moderate cohorts. Penalized variants (LASSO, Ridge, Elastic Net) handle collinear features and perform embedded feature selection.
+- Support vector machines (SVM): effective for moderate-dimensional data with clear class separation; kernel variants capture non-linear boundaries.
+- Random Forest: an ensemble of decision trees that captures non-linear interactions, handles mixed data types, and provides built-in feature importance. Robust to overfitting with proper tuning.
+- Gradient boosting machines (XGBoost, LightGBM, CatBoost): state-of-the-art for tabular clinical data. Capture complex feature interactions, handle missing values natively, and provide SHAP-based interpretability. In MASLD research, explainable gradient boosting models have been shown to outperform conventional non-invasive scoring systems such as FIB-4 and the NAFLD Fibrosis Score in screening for advanced fibrosis [1].
+- Feedforward neural networks: extend classification to high-dimensional feature spaces but require larger training sets and are less interpretable without post-hoc explanation techniques.
+
+Validation: Area under the receiver operating characteristic curve (AUROC), area under the precision-recall curve (AUPRC), F1 score, calibration curves, decision curve analysis (DCA).
+Interpretation: SHAP values decompose each prediction into per-feature contributions, enabling clinicians to understand not only what the model predicts but why.
+
+Strengths: Simpler formulation; widely understood and clinically familiar; abundant tooling and established benchmarks; works with smaller datasets; does not require time-stamped events.
+Limitations: Discards timing information — all events within the window are treated equivalently regardless of when they occur; patients with incomplete follow-up shorter than the prediction window must be excluded or treated as negative (introducing survivorship bias); the choice of time window is arbitrary and may miss events occurring just outside the boundary.
+
+References:
+[1] Dabbah S, Mishani I, Davidov Y, Ben Ari Z. Implementation of Machine Learning Algorithms to Screen for Advanced Liver Fibrosis in Metabolic Dysfunction-Associated Steatotic Liver Disease: An In-Depth Explanatory Analysis. Digestion. 2025;106(3):189-202. doi: 10.1159/000542241. PMID: 39462487.
+
+6.3.3. A note on semi-supervised learning
+ In clinical practice, fully labeled datasets are rare: gold-standard outcome labels are available for only a fraction of patients, while a much larger pool of unlabeled observations exists. Semi-supervised learning (SSL) addresses this scenario by retaining the supervised objective while exploiting the structure of unlabeled data to improve model performance. Although a detailed treatment of SSL is beyond the scope of this review, it is worth noting that techniques such as self-training (pseudo-labeling) and graph-based label propagation offer a natural framework for MASLD settings where biopsy-confirmed diagnoses or long-term comorbidity endpoints are partially observed.
+
+6.4. Unsupervised learning for phenotype discovery
+ Unsupervised learning algorithms discover inherent structure in data without relying on predefined outcome labels. In the MASLD context, this paradigm is especially valuable for hypothesis-free phenotype discovery — identifying natural patient subgroups that share similar biomarker profiles, which may correspond to distinct disease mechanisms and risk trajectories not anticipated by prior clinical knowledge. The unsupervised approach is formalized as: cluster(x) → phenotype_k, where x is the patient's feature vector and phenotype_k is the discovered subgroup assignment.
+
+ Before clustering, dimensionality reduction is typically applied to the high-dimensional biomarker space. Principal component analysis (PCA) identifies linear axes of maximum variance. Non-negative matrix factorization (NMF) decomposes the data into additive, non-negative components that are often more biologically interpretable — for example, isolating latent processes such as metabolic decline, inflammatory activation, or fibrotic remodeling. For visualization, UMAP and t-SNE project data into two or three dimensions while preserving local neighborhood structure. Autoencoders — neural networks trained to reconstruct their input through a low-dimensional bottleneck — capture non-linear latent structure that linear methods may miss.
+
+ Clustering algorithms partition patients into subgroups. K-means minimizes within-cluster variance but assumes spherical, equally sized clusters. Gaussian mixture models (GMM) relax this assumption by modeling clusters as multivariate Gaussian distributions with probabilistic assignments — particularly useful when phenotype boundaries are not sharp. Hierarchical clustering builds nested dendrograms allowing post-hoc selection of cluster granularity. HDBSCAN does not require pre-specifying the number of clusters and can identify noise points. Spectral clustering operates on patient similarity graphs to detect non-convex structures. The number of clusters is determined through internal metrics (silhouette score, Davies–Bouldin index, gap statistic) complemented by stability analysis across bootstrap resamples.
+
+ The critical distinction between the two unsupervised scenarios in our framework lies not in the clustering step itself — which is identical — but in the post-hoc validation strategy used to assess clinical relevance of the discovered phenotypes.
+
+6.4.1. Unsupervised clustering with survival-based validation
+ When time-to-event data are available, the clinical relevance of discovered clusters is assessed through survival analysis performed strictly post hoc (i.e., outcome data are not used during clustering). This is the most informative validation strategy, as it tests whether phenotypes exhibit distinct temporal trajectories of comorbidity development.
+
+Post-hoc validation methods:
+- Kaplan–Meier survival curves stratified by cluster, with log-rank tests for between-group differences.
+- Multivariable Cox regression adjusting for confounders not used in clustering (e.g., age, sex, BMI), estimating hazard ratios for each cluster relative to a reference group.
+- Competing-risks analysis when multiple endpoints are of interest.
+
+Strengths: Provides rigorous temporal evidence that clusters correspond to distinct risk trajectories; utilizes censored observations appropriately; directly answers whether subtypes develop comorbidities at different rates and at different times.
+Limitations: Requires longitudinal follow-up with time-stamped events; validation is post-hoc and observational, so causal interpretation requires caution.
+
+6.4.2. Unsupervised clustering with outcome-rate validation
+ When precise event times are unavailable but outcome data exist in binary or categorical form (e.g., presence/absence of comorbidity at a fixed assessment point), cluster validation is based on comparing outcome prevalence or incidence rates across discovered subtypes.
+
+Post-hoc validation methods:
+- Chi-square or Fisher's exact tests comparing outcome proportions across clusters.
+- Logistic regression adjusting for confounders, estimating odds ratios for each cluster.
+- Visualization of outcome distributions across clusters via heatmaps or bar charts.
+
+Strengths: Simpler validation that works when precise event times are unavailable; applicable to cross-sectional studies or registries with limited temporal resolution.
+Limitations: Less informative than survival-based validation; binary outcomes lose temporal granularity; may miss differences in disease timing that survival analysis would detect.
+
+6.5. Comparative assessment and hybrid workflow
+
+Table 3. Comparative assessment of supervised and unsupervised approaches for MASLD phenotyping.
+
+Dimension                   Supervised learning                         Unsupervised learning
+─────────────────────────────────────────────────────────────────────────────────────────────────────
+Primary goal                Predict specific outcomes                   Discover latent patient subtypes
+Label requirement           Requires outcome labels                     No labels needed for discovery
+Clinical question           Who will develop comorbidity X?             What distinct patient types exist?
+                            When will it occur?
+Output                      Individual risk scores,                     Cluster assignments,
+                            probability estimates                       phenotype profiles
+Interpretability            SHAP values, feature importance             Centroid analysis, radar plots
+Key strength                Directly actionable predictions;            Hypothesis-free; may reveal
+                            optimized for clinical endpoints            subtypes not captured by any
+                                                                        single outcome variable
+Key limitation              Constrained to predefined outcomes;         Clinical relevance not guaranteed;
+                            performance degrades with low event         clusters may reflect artifacts
+                            rates or incomplete follow-up               or confounders
+Validation strategy         C-index, AUROC, calibration,               Internal (silhouette, stability) +
+                            DCA (prospective ideal)                     external (survival or outcome-rate)
+─────────────────────────────────────────────────────────────────────────────────────────────────────
+
+ The supervised and unsupervised approaches are complementary rather than competing. The supervised pathway directly optimizes for outcome prediction and yields individual-level risk scores with per-feature explanations, making it immediately actionable in clinical decision-making. However, it is constrained to predicting outcomes that are predefined and labeled in the training data, and its performance degrades when event rates are low or follow-up is incomplete. The unsupervised pathway discovers latent patient structure without requiring outcome labels, potentially revealing biologically meaningful subtypes that no single outcome variable would capture. Its principal limitation is that clinical relevance is not guaranteed — clusters may reflect data artifacts or confounders rather than disease biology.
+
+ A hybrid workflow that iterates between both paradigms offers the most robust analytical pipeline. In this workflow, unsupervised clustering serves as a hypothesis-generating step, identifying candidate subtypes whose prognostic significance is subsequently tested via supervised models. Conversely, supervised feature importance rankings (e.g., SHAP values) can inform feature selection for clustering, replacing ad hoc approaches with empirically grounded dimensionality reduction. Such a pipeline proceeds as follows: (1) unsupervised clustering on baseline biomarker profiles to discover phenotypes; (2) post-hoc validation of clusters using available outcome data (survival-based or outcome-rate-based); (3) supervised predictive models trained within or across clusters to generate individual-level risk scores; and (4) iteration, where insights from supervised models refine the feature set for subsequent clustering rounds.
+
+ This integrated framework — organized along the dimensions of learning paradigm and data structure — provides a systematic basis for designing reproducible, clinically interpretable analytical pipelines for MASLD phenotyping, risk stratification, and ultimately precision medicine approaches to managing this increasingly prevalent systemic metabolic disease.
+
