@@ -319,7 +319,8 @@ When will it occur?
 	C-index, AUROC, calibration, DCA (prospective ideal)
 	Internal (silhouette, stability) +external (survival or outcome-rate)
 	 The supervised and unsupervised approaches are complementary rather than competing. The supervised pathway directly optimizes for outcome prediction and yields individual-level risk scores with per-feature explanations, making it immediately actionable in clinical decision-making. However, it is constrained to predicting outcomes that are predefined and labeled in the training data, and its performance degrades when event rates are low or follow-up is incomplete. The unsupervised pathway discovers latent patient structure without requiring outcome labels, potentially revealing biologically meaningful subtypes that no single outcome variable would capture. Its principal limitation is that clinical relevance is not guaranteed — clusters may reflect data artifacts or confounders rather than disease biology.
-
+6.4. From phenotype to clinical action
+The ultimate purpose of MASLD phenotyping is not cluster assignment per se, but its translation into differentiated clinical management. Once a patient is assigned to a phenotype, that assignment should carry concrete implications. A hepatotoxic or fibrosis-dominant phenotype — characterized by elevated transaminases, high liver stiffness, and advanced fibrosis markers — warrants intensified hepatological surveillance with shortened FibroScan intervals and early consideration of antifibrotic therapy such as resmetirom. A cardiometabolic phenotype — defined by dyslipidemia, insulin resistance, and elevated cardiovascular risk scores — shifts the management priority toward aggressive lipid control, GLP-1 receptor agonist therapy, and cardiology co-management. An inflammatory phenotype with elevated IL-6, TNF-α, and multi-organ comorbidity burden may benefit from earlier specialist referral thresholds and anti-inflammatory metabolic interventions. Lean or metabolically mild phenotypes, while lower risk, still require periodic reassessment given the potential for trajectory shift with aging. In this way, the ML framework described in the preceding sections does not replace clinical judgement but operationalises it — converting heterogeneous patient profiles into structured, phenotype-specific care pathways that extend beyond the liver to the systemic complications MASLD drives.
 
 References:
 [1] Dabbah S, Mishani I, Davidov Y, Ben Ari Z. Implementation of Machine Learning Algorithms to Screen for Advanced Liver Fibrosis in Metabolic Dysfunction-Associated Steatotic Liver Disease: An In-Depth Explanatory Analysis. Digestion. 2025;106(3):189-202. doi: 10.1159/000542241. PMID: 39462487.
@@ -335,7 +336,6 @@ References:
 
 
 
-for example high risk fibrosis risk group may benefit from early resmetirom intervation, while cardiometabolic risk group need more frequent lipid control???
 
 
 Contributors SL is the first author and was responsible for writing and editing the medical section of the original draft, as well as image preparation. MJ contributed to writing the medical section of the original draft and editing. The manuscript was critically revised by JN and JI and checked for completeness. JČ and DB were responsible for writing the technical section of the original draft. All authors reviewed and approved the final version of the manuscript.
