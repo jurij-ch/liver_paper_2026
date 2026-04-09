@@ -331,12 +331,6 @@
   ---
   Structural Issues
 
-  2. The four-scenario matrix is referenced but never described in text
-  §6.2 says "Table 2 summarizes the four scenarios" but only the table exists — the text never walks through all four cells explicitly. The reader has to infer the framework from scattered pieces. A short paragraph naming all four scenarios would anchor the rest of the section.
-
-  3. Semi-supervised learning is a dangling note
-  It appears as a brief paragraph at the end of §6.2.2 but belongs neither to supervised nor unsupervised. It could be a short §6.2.4, or cut entirely if scope doesn't warrant it.
-
   4. Section 6.3 comparative table precedes the synthesis text
   The table is listed first (Table 3), then the text discusses it. This is fine stylistically, but the combined workflow description at the end of §6.3 is doing the work of a §6.4-level transition — it's long and detailed enough to warrant its own subsection (e.g., §6.3.1 Combined pipeline).
 
