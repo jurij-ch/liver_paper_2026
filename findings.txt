@@ -336,9 +336,6 @@
   ---
   Conceptual/Clarity Issues
 
-  9. "Four scenarios" framing is introduced but not consistently used
-  The framework of 2×2 (supervised/unsupervised × longitudinal/simplified) is a strong organizing idea, but after §6.2 it disappears. §6.2.2 and §6.2.3 are each split into the two data-structure scenarios, but they're not labeled as "Scenario 1–4", making it hard to connect back to the matrix.
-
   10. §6.4 is short relative to the rest
   The clinical action section is the payoff of the whole chapter but reads like a bullet-point sketch. The three phenotypes described (hepatotoxic, cardiometabolic, inflammatory) map onto results from the literature (Hong et al., Raverdy et al.) but this connection is never made explicit. The lean/mild
   phenotype gets only a single sentence.
