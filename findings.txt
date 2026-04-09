@@ -328,15 +328,7 @@
 
 ● Here are the issues I found, grouped by type:
 
-  ---
   Content Inconsistencies
-
-  5. Table numbering is inconsistent
-  - §6.1 references "Table 6.1"
-  - §6.2 references "Table 2"
-  - §6.3 references "Table 3"
-
-  These should follow a consistent scheme (either all chapter-prefixed like Table 6.1, 6.2, 6.3, or all plain numbers).
 
   6. Two unresolved placeholders
   - §6.2.2: [NEED REFERENCE!] — Cox models in MASLD cohorts

@@ -198,7 +198,8 @@ The field of machine learning is conventionally organized into three fundamental
 Thus, the design of a machine learning pipeline for MASLD phenotyping is shaped by two fundamental considerations:
 1. the learning paradigm - whether labeled clinical outcomes are available to guide model training (supervised learning) or whether the goal is hypothesis-free discovery of latent patient structure (unsupervised learning);
 2. the data structure - whether longitudinal follow-up with time-stamped events is recorded, giving rise to censored time-to-event data, or whether outcomes are ascertained within a fixed observation window and represented as binary or categorical labels (simplified data).
-Crossing these two dimensions yields four analytical scenarios, each with distinct methodological requirements, applicable models, and validation strategies. Table 2 summarizes the four scenarios (see chapter6_matrix.mermaid for the source). The following subsections walk through each of these four scenarios in turn: the two supervised settings in §6.3.1 (survival modeling for censored data and fixed-horizon classification for simplified data) and the two unsupervised settings in §6.3.2 (clustering with survival-based validation and clustering with outcome-rate validation).
+Crossing these two dimensions yields four analytical scenarios, each with distinct methodological requirements, applicable models, and validation strategies. Table 6.2 summarizes the four scenarios (see chapter6_matrix.mermaid for the source). The following subsections walk through each of these four scenarios in turn: the two supervised settings in §6.3.1 (survival modeling for censored data and fixed-horizon classification for simplified data) and the two unsupervised settings in §6.3.2 (clustering with survival-based validation and clustering with outcome-rate validation).
+Table 6.2. The machine learning approaches for phenotypic characterization of MASLD
 
 
 In the context of MASLD phenotyping and comorbidity risk stratification, the choice of ML paradigm is determined by the nature of the available data-specifically, the presence or absence of outcome labels, the temporal structure of clinical observations, and the clinical objective (e.g., phenotype discovery versus prognostic prediction).
@@ -258,7 +259,7 @@ Strengths: Simpler validation that works when precise event times are unavailabl
 Limitations: Less informative than survival-based validation; binary outcomes lose temporal granularity; may miss differences in disease timing that survival analysis would detect.
 6.4. An integrated pipeline for MASLD phenotyping
 Having surveyed the supervised and unsupervised paradigms, neither alone can satisfy the problems set out in §6.1., discovering MASLD phenotypes and quantifying their differential comorbidity risk, because in clinical practice these are inseparable steps of the same decision process: meaningful risk stratification presupposes knowing which patient subtype one is dealing with. An integrated workflow is therefore required, which first calls for understanding how their roles differ and complement each other.
-Table 3. Role distribution between supervised and unsupervised paradigms within the combined pipeline.
+Table 6.3. Role distribution between supervised and unsupervised paradigms within the combined pipeline.
 
 
 Dimension
