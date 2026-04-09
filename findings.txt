@@ -331,9 +331,6 @@
   ---
   Structural Issues
 
-  1. Section 6.2.1 is misplaced
-  Data preprocessing (§6.2.1) is inserted between the paradigm overview and the actual paradigm descriptions (§6.2.2, §6.2.3). It interrupts the logical flow. It either belongs before §6.2 as a standalone preprocessing section, or at the very end as an appendix-like note.
-
   2. The four-scenario matrix is referenced but never described in text
   §6.2 says "Table 2 summarizes the four scenarios" but only the table exists — the text never walks through all four cells explicitly. The reader has to infer the framework from scattered pieces. A short paragraph naming all four scenarios would anchor the rest of the section.
 
