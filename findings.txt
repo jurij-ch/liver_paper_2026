@@ -332,16 +332,6 @@
 
   6. Two unresolved placeholders
   - §6.2.2: [NEED REFERENCE!] — Cox models in MASLD cohorts
-  - §6.2.3: (CHECK THIS STATEMENT AND REF!) — NMF applied to MASLD transcriptomics
-
-  These need to be resolved before any submission.
-
-  7. Reference [1] in §6.2.3 points to the wrong study
-  The text says NMF was applied to MASLD transcriptomic data and cites [1, §6.1]. Reference [1] in §6.1 is Ryu et al. (2025), which used NMF on RNA-seq data — so this is actually correct — but the inline note (CHECK THIS STATEMENT AND REF!) suggests the author is unsure. This should be confirmed and the
-  doubt marker removed.
-
-  8. Gradient boosting reference in §6.2.2 is incomplete
-  The text says "explainable gradient boosting models have been shown to outperform FIB-4 and NAFLD Fibrosis Score in screening for advanced fibrosis [1]" — but [1] inside §6.2.2 has no corresponding reference list entry. It's either pointing to Ryu et al. (which is unrelated) or a missing citation.
 
   ---
   Conceptual/Clarity Issues
