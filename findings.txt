@@ -329,12 +329,6 @@
 ● Here are the issues I found, grouped by type:
 
   ---
-  Structural Issues
-
-  4. Section 6.3 comparative table precedes the synthesis text
-  The table is listed first (Table 3), then the text discusses it. This is fine stylistically, but the combined workflow description at the end of §6.3 is doing the work of a §6.4-level transition — it's long and detailed enough to warrant its own subsection (e.g., §6.3.1 Combined pipeline).
-
-  ---
   Content Inconsistencies
 
   5. Table numbering is inconsistent
