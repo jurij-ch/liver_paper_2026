@@ -1,0 +1,1 @@
+$$k = \text{cluster}(x), \quad k \in {1, \dots, K}$$
