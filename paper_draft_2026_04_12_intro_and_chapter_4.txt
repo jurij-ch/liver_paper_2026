@@ -166,6 +166,8 @@ The ultimate purpose of MASLD phenotyping is not cluster assignment per se, but 
 In this way, the ML framework described in the preceding sections does not replace clinical judgement but operationalises it — converting heterogeneous patient profiles into structured, phenotype-specific care pathways. Phase 5 of the pipeline (§6.4) is precisely this translation step: phenotype assignment gates the selection of a comorbidity-specific supervised model, and the resulting individualized risk profile directly informs monitoring frequency, preventive interventions, and referral decisions across the systemic manifestations MASLD drives.
 
 
+
+
 References:
 [1] Dabbah S, Mishani I, Davidov Y, Ben Ari Z. Implementation of Machine Learning Algorithms to Screen for Advanced Liver Fibrosis in Metabolic Dysfunction-Associated Steatotic Liver Disease: An In-Depth Explanatory Analysis. Digestion. 2025;106(3):189-202. doi: 10.1159/000542241. PMID: 39462487.
  Conclusion
