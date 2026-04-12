@@ -144,58 +144,47 @@ Table 6.2. The four machine-learning scenarios for phenotypic characterization o
 In the context of MASLD phenotyping and comorbidity risk stratification, the choice of ML paradigm is determined by the nature of the available data-specifically, the presence or absence of outcome labels, the temporal structure of clinical observations, and the clinical objective (e.g., phenotype discovery versus prognostic prediction).
 This section provides a concise overview of each paradigm (including the specialized extension of survival analysis for censored data) and discusses their applicability to MASLD-related tasks.
 4.3.1. Supervised Learning: predicting extrahepatic comorbidity development
-Supervised learning algorithms learn a mapping from input features to known output labels based on annotated training data. In the context of MASLD, input features may include clinical, laboratory, and imaging measurements organized into clinically meaningful domains - such as lipid panels (HDL, LDL, total cholesterol, triglycerides), insulin resistance markers (HbA1c, fasting insulin, HOMA-IR, C-peptide), liver function tests (ALT, AST, ALP, GGT, bilirubin, albumin and total protein), liver stiffness measurements, inflammatory markers (IL-6, TNF-α), kidney function parameters (urea, creatinine, GFR, urinary albumin-to-creatinine ratio), thyroid markers (TSH, fT3, fT4), and anthropometric indicators (BMI) - while outcome labels represent clinically relevant endpoints such as the development of cardiovascular disease, type 2 diabetes, chronic kidney disease, neurodegenerative disorders, or advanced fibrosis.
-Since patients with MASLD frequently develop multiple comorbid conditions simultaneously or sequentially, the problem is naturally formulated as multi-label classification, where the model predicts the probability of each comorbidity independently. An alternative formulation is multi-task learning, where a shared model architecture jointly learns related prediction tasks, potentially improving performance through shared representations of underlying metabolic mechanisms.
+ Supervised learning maps input features to known outcome labels. In MASLD, input features span clinically meaningful biomarker domains — lipid panels (HDL, LDL, total cholesterol, triglycerides), insulin resistance markers (HbA1c, fasting insulin, HOMA-IR, C-peptide), liver function tests (ALT, AST, ALP, GGT, bilirubin, albumin, total protein), liver stiffness, inflammatory markers (IL-6, TNF-α), kidney function (urea, creatinine, GFR, urinary albumin-to-creatinine ratio), thyroid markers (TSH, fT3, fT4), and anthropometrics (BMI) — while outcome labels represent endpoints such as cardiovascular disease, type 2 diabetes, CKD, neurodegeneration, or advanced fibrosis. Since MASLD patients frequently develop multiple comorbidities simultaneously or sequentially, the problem is naturally formulated as multi-label classification or, alternatively, as multi-task learning, where a shared architecture jointly learns related predictions through shared metabolic representations.
 Scenario 1 - Supervised learning with censored data: survival modeling.
- When longitudinal follow-up data with time-stamped events are available, the analytical framework naturally extends to survival analysis — also referred to as time-to-event modeling. What distinguishes this setting from standard classification is the explicit handling of censored observations (patients who have not yet experienced the event by the end of follow-up) and the modeling of when, not merely whether, an outcome occurs. This temporal dimension is critical for clinical decision-making, as the timing of comorbidity onset directly influences monitoring intervals, therapeutic urgency, and preventive strategies.
+ When longitudinal follow-up with time-stamped events is available, the framework extends to survival analysis, which handles censored observations and models when, not merely whether, an outcome occurs - a distinction critical for clinical decision-making, as comorbidity timing directly influences monitoring intervals and therapeutic urgency.
 Applicable methods:
-* Cox proportional hazards model: the classical survival framework that estimates how covariates shift the baseline hazard.  In MASLD cohorts, Cox models have been widely used to quantify how liver fibrosis stage, insulin resistance markers, and inflammatory biomarkers independently predict time to cardiovascular events or renal decline [NEED REFERENCE!]. Highly interpretable but relies on the proportional hazards assumption and captures only linear effects - a limitation when metabolic interactions (e.g., between dyslipidemia and insulin resistance) are synergistic rather than additive.
-* Random survival forests (RSF): a non-parametric ensemble method that relaxes the proportional hazards assumption and captures non-linear feature interactions. Handles mixed data types and missing values natively, which is advantageous for MASLD datasets where specialized measurements such as liver stiffness or cytokine panels are frequently incomplete.
-* Gradient-boosted survival models (XGBoost-Cox, LightGBM-Survival): combine the flexibility of gradient boosting with Cox partial likelihood loss. Effective for high-dimensional MASLD feature spaces where complex interactions between hepatic, metabolic, and inflammatory markers may drive comorbidity risk.
-* DeepSurv: a deep neural network extension of the Cox model that captures non-linear covariate effects while retaining the proportional hazards framework. Applicable when large MASLD registries provide sufficient sample sizes for deep learning convergence.
-* DeepHit: a deep learning architecture designed for competing risks that does not assume proportional hazards and directly models the joint distribution of event times across multiple outcomes — particularly relevant for MASLD, where the occurrence of one comorbidity (e.g., cardiovascular disease) may alter the risk of another (e.g., chronic kidney disease).
-* Fine-Gray model: addresses competing risks by modeling the subdistribution hazard, allowing estimation of cumulative incidence in the presence of competing events.
-Validation: Concordance index (C-index), time-dependent AUC, Brier score, decision curve analysis (DCA).
-Interpretation: SHAP values, permutation feature importance, partial dependence plots.
-Strengths: Naturally handles incomplete follow-up through censoring; models the timing of events, enabling time-specific risk predictions; supports competing risk formulations essential for multi-comorbidity settings; connects naturally to a Markov state-transition perspective where MASLD is the entry state and transitions to comorbid states are governed by cause-specific hazard functions.
-Limitations: Requires time-stamped event data, which may not be available in all clinical registries; Cox-based methods assume proportional hazards; deep learning approaches require larger cohorts and are less interpretable without post-hoc explanation methods.
-Scenario 2 - Supervised learning with simplified data: fixed-horizon classification
- When precise event times are unavailable or when the clinical question concerns a fixed prediction horizon (e.g., "will this patient develop cardiovascular disease within 2 years?"), outcomes can be simplified to binary or categorical labels within a defined time window. This formulation reduces the problem to standard classification or regression.
+* Cox proportional hazards model: classical, interpretable; estimates covariate effects on baseline hazard. Assumes proportional hazards and linear effects.
+* Random survival forests (RSF): non-parametric; captures non-linear interactions and handles missing data natively.
+* Gradient-boosted survival models (XGBoost-Cox, LightGBM-Survival): combine gradient boosting flexibility with Cox partial likelihood loss for high-dimensional feature spaces.
+* DeepSurv: neural network Cox extension capturing non-linear covariate effects; requires large cohorts.
+* DeepHit: deep learning for competing risks; models joint event-time distributions without the proportional hazards assumption — relevant when one comorbidity alters the risk of another.
+* Fine-Gray model: models subdistribution hazard for competing risks, enabling cumulative incidence estimation.
+Validation: C-index, time-dependent AUC, Brier score, decision curve analysis (DCA).
+Interpretation: SHAP values, permutation importance, partial dependence plots.
+Strengths: Handles censoring; models event timing; supports competing-risk formulations essential for multi-comorbidity settings; compatible with a Markov state-transition perspective where transitions from MASLD to comorbid states are governed by cause-specific hazards.
+Limitations: Requires time-stamped events, which may be unavailable in some registries; Cox assumes proportional hazards; deep learning approaches need larger cohorts and post-hoc explanation.
+Scenario 2 - Supervised learning with simplified data: fixed-horizon classification.
+ When precise event times are unavailable or the clinical question targets a fixed horizon (e.g., "will this patient develop CVD within 2 years?"), outcomes are reduced to binary or categorical labels within a defined time window.
 Applicable methods:
-* Logistic regression: highly interpretable baseline; well suited for small to moderate MASLD cohorts. Penalized variants (LASSO, Ridge, Elastic Net) handle the strong collinearity inherent to biomarker panels (e.g., among liver enzymes (ALT, AST, GGT) or lipid profile components) and perform embedded feature selection that can identify the most discriminative predictors of a given comorbidity.
-* Support vector machines (SVM): effective for moderate-dimensional data with clear class separation; kernel variants capture non-linear boundaries. In MASLD settings, SVMs can separate patients along complex metabolic decision boundaries, for instance, distinguishing those who develop T2DM from those who remain diabetes-free based on combined insulin resistance and inflammatory profiles.
-* Random Forest: an ensemble of decision trees that captures non-linear interactions, handles mixed data types, and provides built-in feature importance - useful for ranking which MASLD-related biomarkers (e.g., HOMA-IR, liver stiffness, GFR) contribute most to a given comorbidity prediction. Robust to overfitting with proper tuning.
-* Gradient boosting machines (XGBoost, LightGBM, CatBoost): state-of-the-art for tabular clinical data. Capture complex feature interactions, handle missing values natively, and provide SHAP-based interpretability. In MASLD research, explainable gradient boosting models have been shown to outperform conventional non-invasive scoring systems such as FIB-4 and the NAFLD Fibrosis Score in screening for advanced fibrosis [1].
-* Feedforward neural networks: extend classification to high-dimensional feature spaces (potentially integrating clinical, genomic, and imaging data from MASLD patients) but require larger training sets and are less interpretable without post-hoc explanation techniques.
-Validation: Area under the receiver operating characteristic curve (AUROC), area under the precision-recall curve (AUPRC), F1 score, calibration curves, decision curve analysis (DCA).
-Interpretation: SHAP values decompose each prediction into per-feature contributions, enabling clinicians to understand not only what the model predicts but why.
-Strengths: Simpler formulation; widely understood and clinically familiar; abundant tooling and established benchmarks; works with smaller datasets; does not require time-stamped events.
-Limitations: Discards timing information — all events within the window are treated equivalently regardless of when they occur; patients with incomplete follow-up shorter than the prediction window must be excluded or treated as negative (introducing survivorship bias); the choice of time window is arbitrary and may miss events occurring just outside the boundary.
+* Logistic regression: interpretable baseline; penalized variants (LASSO, Ridge, Elastic Net) address biomarker collinearity and perform embedded feature selection.
+* Support vector machines (SVM): effective for moderate-dimensional data; kernel variants capture non-linear decision boundaries.
+* Random Forest: captures non-linear interactions, handles mixed data types, provides built-in feature importance.
+* Gradient boosting machines (XGBoost, LightGBM, CatBoost): state-of-the-art for tabular clinical data; handle missing values natively and offer SHAP-based interpretability. In MASLD, these models have outperformed conventional scoring systems such as FIB-4 and the NAFLD Fibrosis Score for advanced fibrosis screening [1].
+* Feedforward neural networks: extend to high-dimensional spaces integrating clinical, genomic, and imaging data; require larger datasets and post-hoc explanation.
+Validation: AUROC, AUPRC, F1 score, calibration curves, DCA.
+Interpretation: SHAP values decompose each prediction into per-feature contributions.
+Strengths: Simpler formulation; clinically familiar; works with smaller datasets; no time-stamped events required.
+Limitations: Discards event timing; patients with follow-up shorter than the prediction window must be excluded or treated as negative (survivorship bias); window choice is arbitrary.
 4.3.2. Unsupervised learning for phenotype discovery
- Unsupervised learning algorithms discover inherent structure in data without relying on predefined outcome labels. In the MASLD context, this paradigm is especially valuable for hypothesis-free phenotype discovery - identifying natural patient subgroups that share similar biomarker profiles, which may correspond to distinct disease mechanisms and risk trajectories not anticipated by prior clinical knowledge. The unsupervised approach is formalized as:
+ Unsupervised learning discovers inherent structure in data without outcome labels. For MASLD, this paradigm is especially valuable for hypothesis-free phenotype discovery - identifying patient subgroups with shared biomarker profiles that may correspond to distinct disease mechanisms and risk trajectories not anticipated by prior clinical knowledge. The approach is formalized as:
 ,
 where x is the patient's feature vector of clinical and laboratory biomarkers, cluster(·) is the learned clustering function that maps the feature space to a discrete set of phenotype labels, K is the total number of discovered MASLD phenotypes, and k is the estimated subgroup assignment for that patient.
- Before clustering, dimensionality reduction is typically applied to the high-dimensional biomarker space. Principal component analysis (PCA) identifies linear axes of maximum variance; in MASLD datasets, leading principal components often correspond to interpretable clinical axes such as metabolic syndrome severity, hepatic injury intensity, or renal function decline. Non-negative matrix factorization (NMF) decomposes the data into additive, non-negative components that are often more biologically interpretable (for example, isolating latent processes such as metabolic decline, inflammatory activation, or fibrotic remodeling). It has already been applied to MASLD transcriptomic data to identify distinct molecular subtypes [1, §6.1].  For visualization, UMAP and t-SNE project data into two or three dimensions while preserving local neighborhood structure, allowing visually assess whether MASLD patient clusters separate along clinically recognizable axes. Autoencoders (neural networks trained to reconstruct their input through a low-dimensional bottleneck) capture non-linear latent structure that linear methods may miss, potentially revealing complex interactions between hepatic, metabolic, and inflammatory features that define MASLD subtypes.
- Clustering algorithms partition patients into subgroups. K-means minimizes within-cluster variance and has been the most frequently applied method in MASLD phenotyping to date, successfully identifying subtypes such as metabolic-dyslipidemia, inflammatory, and hepatotoxic phenotypes [3, §6.1], but assumes spherical, equally sized clusters - an assumption that may not hold when MASLD subtypes differ substantially in prevalence. Gaussian mixture models (GMM) relax this assumption by modeling clusters as multivariate Gaussian distributions with probabilistic assignments - particularly useful in MASLD, where patients may exhibit overlapping features of multiple phenotypes (e.g., concurrent cardiometabolic and inflammatory profiles) rather than belonging cleanly to a single subtype. Hierarchical clustering builds nested dendrograms allowing post-hoc selection of cluster granularity, which is valuable when the optimal number of MASLD phenotypes is unknown a priori. HDBSCAN does not require pre-specifying the number of clusters and can identify noise points, an advantage for excluding atypical MASLD presentations that do not fit any coherent phenotype. Spectral clustering operates on patient similarity graphs to detect non-convex structures. The number of clusters is determined through internal metrics (silhouette score, Davies–Bouldin index, gap statistic) complemented by stability analysis across bootstrap resamples to ensure that identified MASLD phenotypes are reproducible rather than artifacts of a particular data split.
- In MASLD research, unsupervised approaches have already demonstrated utility. Studies employing K-means clustering, non-negative matrix factorization, and data-driven clustering methods have identified distinct MASLD subtypes (ranging from lean metabolically mild phenotypes to inflammatory, hepatotoxic, and cardiometabolic subtypes) with differential risks of liver-related and extrahepatic complications. The unsupervised nature of these methods is particularly advantageous for MASLD phenotyping because it avoids reliance on potentially biased or incomplete outcome labels and is more robust to confounders such as alcohol use and obesity, which can distort disease-specific outcome associations.
- Once clusters are identified, they are characterized post hoc by examining the biomarker domains that dominate each cluster centroid. For example, a cluster with elevated LDL cholesterol, triglycerides, and markers of insulin resistance may be interpreted as a cardiovascular-risk phenotype, while a cluster dominated by elevated transaminases and liver stiffness may represent a hepatotoxic phenotype. External validation using clinical outcomes (such as rates of cardiovascular events, diabetes incidence, or liver-related mortality) provides evidence that the discovered phenotypes are clinically meaningful.
- The critical distinction between the two unsupervised scenarios in our framework lies not in the clustering step itself, which is identical, but in the post-hoc validation strategy used to assess clinical relevance of the discovered phenotypes.
-Scenario 3 - Unsupervised clustering with survival-based validation
- When time-to-event data are available, the clinical relevance of discovered clusters is assessed through survival analysis performed strictly post hoc (i.e., outcome data are not used during clustering). This is the most informative validation strategy, as it tests whether phenotypes exhibit distinct temporal trajectories of comorbidity development.
-Post-hoc validation methods:
-- Kaplan–Meier survival curves stratified by cluster, with log-rank tests for between-group differences.
-- Multivariable Cox regression adjusting for confounders not used in clustering (e.g., age, sex, BMI), estimating hazard ratios for each cluster relative to a reference group.
-- Competing-risks analysis when multiple endpoints are of interest.
-Strengths: Provides rigorous temporal evidence that clusters correspond to distinct risk trajectories; utilizes censored observations appropriately; directly answers whether subtypes develop comorbidities at different rates and at different times.
-Limitations: Requires longitudinal follow-up with time-stamped events; validation is post-hoc and observational, so causal interpretation requires caution.
-Scenario 4 - Unsupervised clustering with outcome-rate validation
- When precise event times are unavailable but outcome data exist in binary or categorical form (e.g., presence/absence of comorbidity at a fixed assessment point), cluster validation is based on comparing outcome prevalence or incidence rates across discovered subtypes.
-Post-hoc validation methods:
-- Chi-square or Fisher's exact tests comparing outcome proportions across clusters.
-- Logistic regression adjusting for confounders, estimating odds ratios for each cluster.
-- Visualization of outcome distributions across clusters via heatmaps or bar charts.
-Strengths: Simpler validation that works when precise event times are unavailable; applicable to cross-sectional studies or registries with limited temporal resolution.
-Limitations: Less informative than survival-based validation; binary outcomes lose temporal granularity; may miss differences in disease timing that survival analysis would detect.
+ Dimensionality reduction is typically applied before clustering. PCA identifies linear variance axes (often corresponding to metabolic syndrome severity, hepatic injury, or renal decline). NMF decomposes data into additive, non-negative components that are more biologically interpretable — e.g., isolating metabolic decline, inflammatory activation, or fibrotic remodeling — and has been applied to MASLD transcriptomics [1, §4.1]. UMAP and t-SNE project data into 2D/3D for visual assessment of cluster separation. Autoencoders capture non-linear latent structure that linear methods may miss.
+ Clustering algorithms include: K-means (most used in MASLD phenotyping [3, §6.1]; assumes spherical, equal-sized clusters); Gaussian mixture models (probabilistic assignments, accommodates overlapping phenotypes); hierarchical clustering (dendrograms allow post-hoc granularity selection); HDBSCAN (no pre-specified K, identifies outliers); and spectral clustering (detects non-convex structures via similarity graphs). Optimal K is determined through silhouette score, Davies–Bouldin index, and gap statistic, complemented by bootstrap stability analysis.
+ Once clusters are identified, they are characterized post hoc by examining dominant biomarker domains at each centroid and validated against clinical outcomes (cardiovascular events, diabetes incidence, liver-related mortality) to confirm phenotypic relevance. The two unsupervised scenarios in our framework share the same clustering step but differ in the post-hoc validation strategy.
+Scenario 3 - Unsupervised clustering with survival-based validation.
+ When time-to-event data are available, cluster relevance is assessed strictly post hoc (outcome data are not used during clustering) via Kaplan–Meier curves with log-rank tests, multivariable Cox regression adjusting for confounders (age, sex, BMI), and competing-risks analysis.
+Strengths: Rigorous temporal evidence of distinct risk trajectories; appropriate censoring handling.
+Limitations: Requires longitudinal follow-up; observational — causal interpretation requires caution.
+Scenario 4 - Unsupervised clustering with outcome-rate validation.
+ When only binary or categorical outcomes are available, validation compares prevalence across clusters via chi-square or Fisher's exact tests, confounder-adjusted logistic regression, and outcome-distribution heatmaps.
+Strengths: Works without event-time data; applicable to cross-sectional or limited-temporal-resolution registries.
+Limitations: Less informative than survival-based validation; loses temporal granularity.
 4.4. An integrated pipeline for MASLD phenotyping
 Having surveyed the supervised and unsupervised paradigms, neither alone can satisfy the problems set out in §6.1., discovering MASLD phenotypes and quantifying their differential comorbidity risk, because in clinical practice these are inseparable steps of the same decision process: meaningful risk stratification presupposes knowing which patient subtype one is dealing with. An integrated workflow is therefore required that draws on all four scenarios of Table 6.2, which first calls for understanding how their roles differ and complement each other.
 Table 6.3. Role distribution between supervised and unsupervised paradigms within the combined pipeline.
@@ -239,10 +228,6 @@ The ultimate purpose of MASLD phenotyping is not cluster assignment per se, but 
  Inflammatory phenotype. Corresponding to Hong et al.'s inflammatory subtype and Huneault et al.'s inflammatory-fibrotic metabotype — defined by elevated IL-6, TNF-α, and concurrent multi-organ comorbidity burden — this group carries the highest extrahepatic complication load across published studies [3, §6.1; 4, §6.1]. Management warrants lower thresholds for specialist referral across nephrology, cardiology, endocrinology, and neurology, with particular attention to chronic kidney disease progression and cognitive decline, given the convergent metabolic-inflammatory mechanisms linking hepatic, renal, and neurological function.
  Lean or metabolically mild phenotype. Corresponding to Ryu et al.'s Cluster I and Huneault et al.'s early-mild metabotype, this group presents with the lowest short-term complication burden [1, §6.1; 4, §6.1]. However, metabolically mild status does not imply a stable trajectory. As outlined in the introduction, age-related processes — cellular senescence, mitochondrial dysfunction, impaired autophagy, and oxidative stress — progressively erode hepatic metabolic reserve even in the absence of overt metabolic syndrome. Patients assigned to this phenotype therefore require periodic reassessment, with re-clustering at defined intervals to detect trajectory shifts before clinical complications emerge; the pipeline described in §6.4 supports this by treating phenotype assignment as a dynamic, revisable classification rather than a fixed label.
 In this way, the ML framework described in the preceding sections does not replace clinical judgement but operationalises it — converting heterogeneous patient profiles into structured, phenotype-specific care pathways. Phase 5 of the pipeline (§6.4) is precisely this translation step: phenotype assignment gates the selection of a comorbidity-specific supervised model, and the resulting individualized risk profile directly informs monitoring frequency, preventive interventions, and referral decisions across the systemic manifestations MASLD drives.
-
-
-
-
 References:
 [1] Dabbah S, Mishani I, Davidov Y, Ben Ari Z. Implementation of Machine Learning Algorithms to Screen for Advanced Liver Fibrosis in Metabolic Dysfunction-Associated Steatotic Liver Disease: An In-Depth Explanatory Analysis. Digestion. 2025;106(3):189-202. doi: 10.1159/000542241. PMID: 39462487.
  Conclusion
@@ -258,75 +243,39 @@ References
 ________________
 
 
-Chapter 6: Machine learning framework for MASLD phenotyping and risk stratification
+  4. Machine learning framework for MASLD phenotyping and risk stratification
 
-
-  6.1 Problem formulation
-  - Clinical motivation: stratifying MASLD patients by biological heterogeneity and extrahepatic disease risk
-  - Literature review: 4 published phenotyping studies (Ryu et al., Raverdy et al., Hong et al., Huneault et al.)
-  - Table 6.1 — summary of published MASLD phenotyping studies
-  - Transition: introduces the ML-focused approach taken in subsequent sections
-
-
-  6.2 Machine learning paradigms for phenotypic characterization of MASLD
-
-
-  - Two design dimensions: (1) learning paradigm, (2) data structure (longitudinal vs. fixed-window)
-  - Four analytical scenarios → Table 6.2 (matrix, sourced from chapter6_matrix.mermaid)
-
-
-  6.2.1 Preparing MASLD clinical data for machine learning
-    - Missing data & informative missingness
-    - High collinearity in biomarker panels; feature selection strategies
-    - Normalization / log-transformation
-  6.2.2 Supervised Learning: predicting extrahepatic comorbidity development
-    - Multi-label classification / multi-task learning framing
-    - Supervised + longitudinal data → Survival modeling
-        - Methods: Cox PH, RSF, XGBoost-Cox/LightGBM, DeepSurv, DeepHit, Fine-Gray
-      - Validation: C-index, time-AUC, Brier score, DCA
-      - Interpretation: SHAP, permutation importance, PDP
-      - Strengths / Limitations
-    - Supervised + simplified data → Fixed-horizon classification
-        - Methods: Logistic regression, SVM, Random Forest, GBM (XGBoost/LightGBM/CatBoost), Feedforward NNs
-      - Validation: AUROC, AUPRC, F1, calibration, DCA
-      - Interpretation: SHAP
-      - Strengths / Limitations
-    - Note on semi-supervised learning (self-training, graph-based label propagation)
-
-
-  6.2.3 Unsupervised Learning: phenotype discovery
-    - Dimensionality reduction: PCA, NMF, UMAP/t-SNE, Autoencoders
-    - Clustering algorithms: K-means, GMM, Hierarchical, HDBSCAN, Spectral
-    - Cluster number selection: silhouette, Davies–Bouldin, gap statistic, bootstrap stability
-    - Post-hoc characterization by cluster centroid biomarker domains
-    - Unsupervised + survival-based validation
-        - Methods: Kaplan–Meier, log-rank, Cox regression, competing-risks analysis
-      - Strengths / Limitations
-    - Unsupervised + outcome-rate validation
-        - Methods: Chi-square/Fisher, logistic regression, heatmaps
-      - Strengths / Limitations
-
-
-  6.3 Comparative assessment
-  - Table 6.3 — supervised vs. unsupervised comparison across 7 dimensions
-  - Synthesis: the two paradigms are complementary
-  - Combined sequential workflow (Figure 5): unsupervised discovery → phenotype validation → phenotype-specific supervised models → deployment
-
-
-  6.4 From phenotype to clinical action
-
-
-  - Hepatotoxic/fibrosis-dominant phenotype → hepatological surveillance, antifibrotics (resmetirom)
-  - Cardiometabolic phenotype → lipid control, GLP-1 agonists, cardiology co-management
-  - Inflammatory phenotype → specialist referral, anti-inflammatory interventions
-  - Lean/mild phenotype → periodic reassessment
-  - Closing: ML operationalises clinical judgement, not replaces it
-
-
-  ---
-  The chapter follows a logical arc:
-why (§6.1) →
-how to choose the method (§6.2 framework) →
-how each method works (§6.2.1–6.2.3) →
-how to compare them (§6.3) →
-what to do with the result (§6.4).
+  - 4.1. Problem formulation
+    - Clinical motivation for data-driven phenotyping
+    - Survey of published MASLD phenotyping studies (4 papers)
+    - Table 6.1 — summary of published studies
+    - Transition to ML methodology
+  - 4.2. Preparing MASLD clinical data for machine learning
+    - Missing data / informative missingness
+    - High collinearity in biomarker panels
+    - Normalization / transformation
+  - 4.3. Machine learning paradigms for phenotypic characterization of MASLD
+    - Intro: 3 paradigms, scope exclusions (RL, semi-supervised)
+    - Two dimensions: learning paradigm × data structure → 4 scenarios
+    - Table 6.2 — 4-scenario matrix
+    - 4.3.1. Supervised Learning
+        - Feature domains and outcome labels
+      - Multi-label / multi-task formulation
+      - Scenario 1 — Survival modeling (censored data): Cox, RSF, XGBoost-Cox, DeepSurv, DeepHit, Fine-Gray
+      - Scenario 2 — Fixed-horizon classification: Logistic regression, SVM, Random Forest, GBM, Neural nets
+      - Validation, interpretation, strengths/limitations for each
+    - 4.3.2. Unsupervised learning for phenotype discovery
+        - Dimensionality reduction: PCA, NMF, UMAP/t-SNE, autoencoders
+      - Clustering algorithms: K-means, GMM, hierarchical, HDBSCAN, spectral
+      - Post-hoc characterization of clusters
+      - Scenario 3 — Survival-based validation (KM curves, Cox, competing risks)
+      - Scenario 4 — Outcome-rate validation (chi-square, logistic regression, heatmaps)
+  - 4.4. An integrated pipeline for MASLD phenotyping
+    - Table 6.3 — supervised vs. unsupervised role comparison
+    - 5-phase sequential workflow description
+    - Figure 5 reference
+  - 4.5. From phenotype to clinical action
+    - Hepatotoxic / fibrosis-dominant phenotype → management
+    - Cardiometabolic phenotype → management
+    - Inflammatory phenotype → management
+    - Lean / metabolically mild phenotype → management
