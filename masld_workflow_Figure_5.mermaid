@@ -17,7 +17,7 @@ flowchart TD
     subgraph Phase3["<b>Phase 3: Clinical Validation</b>"]
         F --> G{"Do clusters differ<br/>significantly in<br/>clinical outcomes?"}
         C --> G
-        G -->|"No"| H["Revise: adjust features,<br/>clustering method,<br/>number of clusters"]
+        G -->|"No"| H["Negative result<br/><i>(report) or revise if<br/>methodologically justified</i>"]
         H --> D
         G -->|"Yes<br/><i>(Kaplan–Meier / log-rank,<br/>Cox regression, or<br/>outcome-rate comparison)</i>"| I["Validated Phenotypes<br/><i>Clinically meaningful<br/>patient subgroups</i>"]
     end
