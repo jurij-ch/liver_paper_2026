@@ -28,12 +28,12 @@ flowchart TD
         C --> K
     end
 
-    subgraph Phase5["<b>Phase 5: Clinical Deployment</b>"]
-        L["New MASLD Patient<br/><i>single biomarker vector</i>"] --> M["Assign phenotype via<br/>cluster model<br/><i>nearest centroid (K-means)<br/>or posterior probability (GMM)</i>"]
-        E --> M
-        M --> N["Phenotype-specific<br/>risk score<br/><i>continuous per-comorbidity<br/>risk estimates</i>"]
-        K --> N
-        N --> O["Clinical Decision Support<br/><i>Monitoring frequency,<br/>preventive interventions,<br/>targeted therapy</i>"]
+    subgraph Phase5["<b>Phase 5: Prospective Application Framework</b>"]
+        L["New MASLD Patient<br/><i>single biomarker vector</i>"] --> M["Assign phenotype via<br/>clustering model<br/><i>nearest centroid / posterior<br/>probability</i>"]
+        E -.->|"trained model"| M
+        M --> N["Phenotype-specific<br/>risk profile<br/><i>per-comorbidity risk estimates<br/>via supervised model</i>"]
+        K -.->|"trained model"| N
+        N --> O["Proposed Care Pathway<br/><i>Monitoring frequency,<br/>referral thresholds,<br/>preventive interventions</i>"]
     end
 
     style Phase1 fill:transparent,stroke:#555,stroke-width:2px
@@ -52,7 +52,7 @@ flowchart TD
     style H fill:#fadbd8,stroke:#e74c3c
     style I fill:#d5f5e3,stroke:#27ae60
     style K fill:#e8daef,stroke:#8e44ad
-    style L fill:#e8f4f8,stroke:#2980b9
-    style M fill:#d5f5e3,stroke:#27ae60
-    style N fill:#e8daef,stroke:#8e44ad
-    style O fill:#fdebd0,stroke:#e67e22
+    style L fill:#e8f4f8,stroke:#2980b9,stroke-dasharray: 5 5
+    style M fill:#d5f5e3,stroke:#27ae60,stroke-dasharray: 5 5
+    style N fill:#e8daef,stroke:#8e44ad,stroke-dasharray: 5 5
+    style O fill:#fdebd0,stroke:#e67e22,stroke-dasharray: 5 5
