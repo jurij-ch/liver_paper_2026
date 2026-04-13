@@ -1,0 +1,36 @@
+  4. Machine learning framework for MASLD phenotyping and risk stratification
+
+  - 4.1. Problem formulation
+    - Clinical motivation for data-driven phenotyping
+    - Survey of published MASLD phenotyping studies (4 papers)
+    - Table 6.1 — summary of published studies
+    - Transition to ML methodology
+  - 4.2. Preparing MASLD clinical data for machine learning
+    - Missing data / informative missingness
+    - High collinearity in biomarker panels
+    - Normalization / transformation
+  - 4.3. Machine learning paradigms for phenotypic characterization of MASLD
+    - Intro: 3 paradigms, scope exclusions (RL, semi-supervised)
+    - Two dimensions: learning paradigm × data structure → 4 scenarios
+    - Table 6.2 — 4-scenario matrix
+    - 4.3.1. Supervised Learning
+        - Feature domains and outcome labels
+      - Multi-label / multi-task formulation
+      - Scenario 1 — Survival modeling (censored data): Cox, RSF, XGBoost-Cox, DeepSurv, DeepHit, Fine-Gray
+      - Scenario 2 — Fixed-horizon classification: Logistic regression, SVM, Random Forest, GBM, Neural nets
+      - Validation, interpretation, strengths/limitations for each
+    - 4.3.2. Unsupervised learning for phenotype discovery
+        - Dimensionality reduction: PCA, NMF, UMAP/t-SNE, autoencoders
+      - Clustering algorithms: K-means, GMM, hierarchical, HDBSCAN, spectral
+      - Post-hoc characterization of clusters
+      - Scenario 3 — Survival-based validation (KM curves, Cox, competing risks)
+      - Scenario 4 — Outcome-rate validation (chi-square, logistic regression, heatmaps)
+  - 4.4. An integrated pipeline for MASLD phenotyping
+    - Table 6.3 — supervised vs. unsupervised role comparison
+    - 5-phase sequential workflow description
+    - Figure 5 reference
+  - 4.5. From phenotype to clinical action
+    - Hepatotoxic / fibrosis-dominant phenotype → management
+    - Cardiometabolic phenotype → management
+    - Inflammatory phenotype → management
+    - Lean / metabolically mild phenotype → management
