@@ -34,7 +34,7 @@ References:
 [8] Schnabl B, Damman CJ, Carr RM. Metabolic dysfunction-associated steatotic liver disease and the gut microbiome: pathogenic insights and therapeutic innovations. J Clin Invest. 2025 Apr 1;135(7):e186423. doi: 10.1172/JCI186423. PMID: 40166938; PMCID: PMC11957707.
 [9] Zerem E, Kunosic S, Kurtcehajic A, Zerem D, Zerem O. Bile acids in metabolic dysfunction-associated steatotic liver disease. World J Hepatol. 2025 Aug 27;17(8):108606. doi: 10.4254/wjh.v17.i8.108606. PMID: 40901599; PMCID: PMC12400426.
 [10 ]Zhu F, Zheng S, Zhao M, Shi F, Zheng L, Wang H. The regulatory role of bile acid microbiota in the progression of liver cirrhosis. Front Pharmacol. 2023 Jun 21;14:1214685. doi: 10.3389/fphar.2023.1214685. PMID: 37416060; PMCID: PMC10320161.
-3.  Metabolic Dysfunction-Associated Steatotic Liver Disease as driver of multi organ again and metabolic dysfunction.
+3.  Metabolic Dysfunction-Associated Steatotic Liver Disease as driver of multi organ again[a] and metabolic dysfunction
  MASLD extends beyond its hepatic origin and exerts widespread effects on multiple organ systems. Building on the complex pathophysiological mechanisms described earlier, MASLD can act as a key driver of systemic dysfunction through interconnected metabolic and inflammatory pathways. As a result, it contributes significantly to the development of extrahepatic complications, highlighting its role as a multisystem disease rather than a liver-limited condition.
 3.1 Cardiovascular disease
  MASLD plays a significant role in the development of cardiovascular disease (CVD). Patients with MASLD have a significantly higher risk of experiencing cardiovascular events such as heart attack, heart failure, or even death from heart-related issues compared to those without the condition. [1]. Nationwide Korean cohorts show MASLD elevates CVD incidence to 8.5 per 1000 person-years versus 6.2 in non-MASLD [2].
@@ -88,7 +88,7 @@ References:
 [9] Williams DM, Ali J, Cragg J, Ch'ng CL, Williams NW, Stephens JW, Min T. The Bidirectional Relationship Between Type 2 Diabetes and Metabolic Dysfunction-Associated Steatotic Liver Disease: A Retrospective Cohort Study. Cureus. 2024 Dec 19;16(12):e75993. doi: 10.7759/cureus.75993. PMID: 39835079; PMCID: PMC11743228.
 
 
-Figure 2. Metabolic Dysfunction-Associated Steatotic Liver Disease as driver of multi organ again and metabolic dysfunction.
+Figure 2. Metabolic Dysfunction-Associated Steatotic Liver Disease as driver of multi organ again[b] and metabolic dysfunction.
  The preceding sections have demonstrated that MASLD is not merely a liver-specific disorder but a systemic metabolic disease that drives dysfunction across multiple organ systems - including the cardiovascular system, kidneys, brain and pancreas. The heterogeneity of these extrahepatic manifestations, combined with the wide interindividual variability in disease progression, underscores a fundamental clinical challenge: patients carrying the same MASLD diagnosis may follow markedly different trajectories of multi-organ deterioration. Addressing this challenge requires systematic, data-driven approaches capable of uncovering latent patient subgroups and stratifying risk for specific comorbidities. The following sections formulate this problem in terms of machine learning paradigms and present a structured analytical framework for MASLD phenotyping and risk stratification.
 4. Machine learning framework for MASLD phenotyping and risk stratification
 4.1. Problem formulation
@@ -132,7 +132,7 @@ References:
 [4] Huneault, H.E., Tiwari, P., Jarrell, Z.R. et al. Clinically distinct metabotypes of pediatric MASLD identified through unsupervised clustering of NASH CRN data. Nat Commun (2026). https://doi.org/10.1038/s41467-026-69735-z
 4.2. Preparing MASLD clinical data for machine learning
  Real-world MASLD clinical data present several preprocessing challenges that must be addressed before applying any ML pipeline. Missing data are common and non-random: specialized measurements such as liver stiffness or laboratory data such as insulin resistance markers (HbA1c, fasting insulin, HOMA-IR, C-peptide) or lipid metabolism markers (HDL, LDL, total cholesterol, triglycerides) are frequently absent for patients without metabolic risk flags, introducing informative missingness that simple mean imputation would distort; multiple imputation or missingness indicator encoding is preferable. High collinearity is inherent to MASLD biomarker panels - liver enzymes (ALT, AST, GGT) co-vary strongly, as do components of the lipid panel and insulin resistance proxies - making feature selection essential both to prevent model instability and to preserve clinical interpretability. Feature selection can be performed using model-based regularization (e.g., LASSO), wrapper methods (e.g., Boruta), or post-hoc importance analysis (e.g., SHAP). Finally, continuous biomarkers such as BMI, GFR, and transaminases typically require normalization or log-transformation to reduce the influence of extreme values that are clinically meaningful but statistically disruptive.
-4.3. Machine learning paradigms for phenotypic characterization of MASLD
+4.3. Machine learning paradigms and analytical scenarios for phenotypic characterization of MASLD
 The field of machine learning is conventionally organized into three fundamental paradigms: supervised learning, unsupervised learning, and reinforcement learning. Although reinforcement learning holds promise for personalized treatment optimization, it requires dense sequential per-patient data that are rarely available in current MASLD cohorts and is therefore beyond the scope of this review. Semi-supervised learning, a hybrid paradigm that extends the supervised objective by exploiting unlabeled data through techniques such as self-training (pseudo-labeling) or graph-based label propagation, is similarly relevant to MASLD cohorts where outcome labels are only partially observed but is likewise beyond the scope of this review.
 Thus, the design of a machine learning pipeline for MASLD phenotyping is shaped by two fundamental considerations:
 1. the learning paradigm - whether labeled clinical outcomes are available to guide model training (supervised learning) or whether the goal is hypothesis-free discovery of latent patient structure (unsupervised learning);
@@ -279,3 +279,5 @@ ________________
     - Cardiometabolic phenotype → management
     - Inflammatory phenotype → management
     - Lean / metabolically mild phenotype → management
+[a]aging?
+[b]aging?
