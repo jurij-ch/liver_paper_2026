@@ -22,31 +22,22 @@ One of the main goals of this work is to address the clinical challenge of strat
 Table 6.1. Summary of published MASLD phenotyping studies.
 Study
 	Approach
-	Data used
 	Method
 	Identified phenotypes
 	[1]
 	Machine learning
-
-
 	Non-negative matrix factorization
 	Metabolic, Proliferative, Inflammatory.
 	[2]
 	Statistical analysis
-
-
 	Data-driven clustering
 	Liver-specific subtype and  cardiometabolic subtype.
 	[3]
 	Machine learning
-
-
 	K-means clustering
 	Metabolic-dyslipidemia, younger, obesity, inflammatory, and hepatotoxic.
 	[4]
 	Machine learning
-
-
 	Unsupervised learning
 	Early-mild, cardiometabolic and inflammatory-fibrotic.
 	 As observed, the methods employed to address this problem are ranging from statistical analysis to machine learning approaches. Furthermore, the identified clusters differ significantly across published studies. In the following sections, we aim to clarify potential approaches to solving this problem, with a particular focus on the application of machine learning. This includes an overview of machine learning paradigms and the models commonly used within this context. Together, these strategies aim to enable data-driven phenotypic stratification of MASLD and to support precision-oriented risk assessment and management.
@@ -162,3 +153,7 @@ Funding The authors have not declared a specific grant for this work from any fu
 
 
 References
+
+
+[a]aging?
+[b]aging?
